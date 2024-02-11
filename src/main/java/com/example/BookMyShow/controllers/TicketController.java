@@ -1,31 +1,43 @@
 package com.example.BookMyShow.controllers;
 
-import com.example.BookMyShow.models.Movie;
-import com.example.BookMyShow.repositories.MovieRepository;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.BookMyShow.Dtos.TicketRequestDto;
+import com.example.BookMyShow.Dtos.TicketResponseDto;
+import com.example.BookMyShow.models.Booking;
+import com.example.BookMyShow.services.BookingService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Date;
 
 @RestController
 @RequestMapping(path = "/ticket")
 public class TicketController {
 
-    public TicketController(MovieRepository movieRepository) {
-        this.movieRepository = movieRepository;
+    public final BookingService bookingService;
+
+    @Autowired
+    public TicketController(BookingService bookingService) {
+        this.bookingService = bookingService;
     }
 
-    private final MovieRepository movieRepository;
+    @PostMapping(path = "/book")
+    @ResponseStatus(value = HttpStatus.CREATED)
+    public @ResponseBody TicketResponseDto bookTicket(@RequestBody TicketRequestDto ticketRequestDto){
 
-    @GetMapping(path = "/book")
-    public String bookTicket(){
-        System.out.println("Request hit the server");
-        movieRepository.save(Movie.builder().name("The Intern").language("ENGLISH").build());
-        return "Hello from the server";
+        Booking booking =  bookingService.bookShow(ticketRequestDto.getShowSeatIds());
+
+        TicketResponseDto ticketResponseDto = TicketResponseDto
+                                                .builder()
+                                                .bookingId(booking.getId())
+                                                .bookedAt(booking.getBookedAt())
+                                                .ticketNumbersBooked(booking.getShowSeatList().size())
+                                                .build();
+        return ticketResponseDto;
     }
 
     @RequestMapping(method = RequestMethod.GET,path = "/get")
     public void getTickets(){
-        System.out.println(movieRepository.findAll());
+        System.out.println("Hello from the server");
     }
 }

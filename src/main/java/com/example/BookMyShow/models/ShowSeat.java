@@ -3,8 +3,14 @@ package com.example.BookMyShow.models;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.ManyToOne;
+import lombok.*;
 
 @Entity
+@Getter
+@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class ShowSeat extends BaseModel {
 
     @ManyToOne
