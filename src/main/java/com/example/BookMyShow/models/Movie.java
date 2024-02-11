@@ -10,10 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "movies")
-public class Movie {
+public class Movie extends BaseModel{
 
-    @Id
-    private Long Id;
     private String name;
     private String language;
     private double rating;
@@ -23,7 +21,7 @@ public class Movie {
     @Override
     public String toString() {
         return "Movie{" +
-                "Id=" + Id +
+                "Id=" + this.getId() +
                 ", name='" + name + '\'' +
                 ", language='" + language + '\'' +
                 ", rating=" + rating +

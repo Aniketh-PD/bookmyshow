@@ -20,7 +20,7 @@ public class TicketController {
     @GetMapping(path = "/book")
     public String bookTicket(){
         System.out.println("Request hit the server");
-        movieRepository.save(Movie.builder().Id(1l).name("The Intern").language("ENGLISH").build());
+        movieRepository.save(Movie.builder().name("The Intern").language("ENGLISH").build());
         return "Hello from the server";
     }
 
